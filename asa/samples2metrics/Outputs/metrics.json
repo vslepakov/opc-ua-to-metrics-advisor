@@ -1,0 +1,20 @@
+{
+    "Name": "metrics",
+    "DataSourceType": "Event Hub",
+    "EventHubProperties": {
+        "ServiceBusNamespace": "vislepak",
+        "SharedAccessPolicyName": "samples2metrics_metrics_policy",
+        "EventHubName": "opc-messages",
+        "PartitionKey": "PartitionKey",
+        "PropertyColumns": [],
+        "SharedAccessPolicyKey": null
+    },
+    "DataSourceCredentialDomain": "f9debebe-7285-4984-8547-153bfa8095b9.StreamAnalystics",
+    "Serialization": {
+        "Type": "Json",
+        "Encoding": "UTF8",
+        "Format": "LineSeparated",
+        "FieldDelimiter": null
+    },
+    "ScriptType": "Output"
+}

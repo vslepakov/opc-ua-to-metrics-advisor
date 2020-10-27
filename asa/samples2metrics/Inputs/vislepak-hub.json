@@ -1,0 +1,21 @@
+{
+    "Name": "vislepak-hub",
+    "Type": "Data Stream",
+    "DataSourceType": "IoT Hub",
+    "IoTHubProperties": {
+        "IotHubNamespace": "vislepak-hub",
+        "SharedAccessPolicyName": "iothubowner",
+        "ConsumerGroupName": "asa",
+        "Endpoint": "messages/events",
+        "SharedAccessPolicyKey": null
+    },
+    "PartitionKey": null,
+    "DataSourceCredentialDomain": "3eac5136-19ec-476f-8871-ffca5e22546b.StreamAnalystics",
+    "Serialization": {
+        "Type": "Json",
+        "Encoding": "UTF8",
+        "FieldDelimiter": null
+    },
+    "CompressionType": "None",
+    "ScriptType": "Input"
+}
