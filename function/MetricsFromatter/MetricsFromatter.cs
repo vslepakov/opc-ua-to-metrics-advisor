@@ -18,15 +18,14 @@ namespace MetricsFromatter
         [FunctionName("MetricsFromatter")]
         public static async Task Run([EventHubTrigger("opc-messages", Connection = "EventHubConnectionString", ConsumerGroup ="metrics")] EventData[] events, ILogger log)
         {
+            var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
+            var containerName = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONTAINER_NAME");
             var exceptions = new List<Exception>();
 
             foreach (EventData eventData in events)
             {
                 try
                 {
-                    var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING");
-                    var containerName = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONTAINER_NAME");
-
                     string messageBody = Encoding.UTF8.GetString(eventData.Body.Array, eventData.Body.Offset, eventData.Body.Count);
                     var json = JObject.Parse(messageBody);
 
