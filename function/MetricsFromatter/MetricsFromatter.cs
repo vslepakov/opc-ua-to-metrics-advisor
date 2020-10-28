@@ -40,7 +40,7 @@ namespace MetricsFromatter
 
                     log.LogInformation($"Uploading metrics file: {fileName}");
 
-                    var metric = $"{{\"{(string)json["DisplayName"]}\": {(double)json["Value"]}}}";
+                    var metric = $"[{{\"date\": \"{sourceTimeStamp:yyyy-MM-ddTHH:mm:00Z}\",\"{(string)json["DisplayName"]}\": {(double)json["Value"]}}}]";
                     using var stream = new MemoryStream(Encoding.UTF8.GetBytes(metric));
                     await blobClient.UploadAsync(stream, new BlobHttpHeaders { ContentType = "application/json" });
                 }

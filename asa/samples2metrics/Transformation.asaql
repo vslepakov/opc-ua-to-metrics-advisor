@@ -1,28 +1,31 @@
 WITH 
-TagsQuery AS (
-	SELECT
-		NodeId,
-        Value.Value,
-        ApplicationUri,
-        DisplayName,
-        CAST(Value.SourceTimestamp as datetime) as SourceTimestamp
-	FROM
-		[vislepak-hub]
-),
-LatestDataPerNodeId AS (
-    SELECT
-        TopOne() OVER (ORDER BY SourceTimestamp DESC) as topEvent  
-    FROM 
-        TagsQuery 
-    GROUP BY NodeId, TumblingWindow(second, 60)
-)
+TagsQuery AS(
+SELECT 
+    NodeId,
+    Value.Value,
+    ApplicationUri,
+    DisplayName,
+    CAST(Value.SourceTimestamp as datetime) as SourceTimestamp 
+FROM 
+    [vislepak-hub] 
+), 
+LatestDataPerNodeId AS(
+SELECT 
+    TopOne() OVER(ORDER BY SourceTimestamp DESC) as topEvent 
+FROM 
+    TagsQuery 
+GROUP BY 
+    NodeId,
+    TumblingWindow(second, 60) 
+) 
 
-SELECT
+SELECT 
     topEvent.NodeId as NodeId,
     topEvent.Value as Value,
     topEvent.ApplicationUri as ApplicationUri,
     topEvent.SourceTimestamp as SourceTimestamp,
     topEvent.DisplayName as DisplayName,
-    CONCAT(topEvent.ApplicationUri, '_', topEvent.DisplayName) as PartitionKey
-INTO metrics
-FROM LatestDataPerNodeId
+    CONCAT(topEvent.ApplicationUri, '_', topEvent.DisplayName) as PartitionKey INTO metrics 
+FROM 
+    LatestDataPerNodeId PARTITION BY PartitionKey 
+
