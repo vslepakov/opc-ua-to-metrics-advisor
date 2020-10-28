@@ -5,15 +5,14 @@
         "ServiceBusNamespace": "vislepak",
         "SharedAccessPolicyName": "samples2metrics_metrics_policy",
         "EventHubName": "opc-messages",
-        "PartitionKey": "PartitionKey",
         "PropertyColumns": [],
         "SharedAccessPolicyKey": null
     },
-    "DataSourceCredentialDomain": "f9debebe-7285-4984-8547-153bfa8095b9.StreamAnalystics",
+    "DataSourceCredentialDomain": "cec9c19d-f791-4d8f-9e92-f9cea3e60774.StreamAnalystics",
     "Serialization": {
         "Type": "Json",
         "Encoding": "UTF8",
-        "Format": "LineSeparated",
+        "Format": "Array",
         "FieldDelimiter": null
     },
     "ScriptType": "Output"

@@ -9,7 +9,9 @@ SELECT
     CONCAT(ApplicationUri, '_', DisplayName) as PartitionKey 
 FROM 
     [vislepak-hub] 
-), 
+),
+-- Due to Metrics Advisor Limitations:
+-- Assumption/Pre-condition is that all relevant data points have the same timestamp 
 LatestDataPerNodeId AS(
 SELECT 
     TopOne() OVER(ORDER BY SourceTimestamp DESC) as topEvent 
@@ -25,8 +27,8 @@ SELECT
     topEvent.Value as Value,
     topEvent.ApplicationUri as ApplicationUri,
     topEvent.SourceTimestamp as SourceTimestamp,
-    topEvent.DisplayName as DisplayName,
-    topEvent.PartitionKey as PartitionKey INTO metrics 
+    topEvent.DisplayName as DisplayName
+INTO metrics 
 FROM 
-    LatestDataPerNodeId PARTITION BY PartitionKey 
+    LatestDataPerNodeId
 
