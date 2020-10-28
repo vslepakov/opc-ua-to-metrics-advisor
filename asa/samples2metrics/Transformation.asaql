@@ -5,7 +5,8 @@ SELECT
     Value.Value,
     ApplicationUri,
     DisplayName,
-    CAST(Value.SourceTimestamp as datetime) as SourceTimestamp 
+    CAST(Value.SourceTimestamp as datetime) as SourceTimestamp,
+    CONCAT(ApplicationUri, '_', DisplayName) as PartitionKey 
 FROM 
     [vislepak-hub] 
 ), 
@@ -15,7 +16,7 @@ SELECT
 FROM 
     TagsQuery 
 GROUP BY 
-    NodeId,
+    PartitionKey,
     TumblingWindow(second, 60) 
 ) 
 
@@ -25,7 +26,7 @@ SELECT
     topEvent.ApplicationUri as ApplicationUri,
     topEvent.SourceTimestamp as SourceTimestamp,
     topEvent.DisplayName as DisplayName,
-    CONCAT(topEvent.ApplicationUri, '_', topEvent.DisplayName) as PartitionKey INTO metrics 
+    topEvent.PartitionKey as PartitionKey INTO metrics 
 FROM 
     LatestDataPerNodeId PARTITION BY PartitionKey 
 
