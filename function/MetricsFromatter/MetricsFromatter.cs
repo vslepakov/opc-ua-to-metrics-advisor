@@ -32,13 +32,18 @@ namespace MetricsFromatter
                     // Assumption / Pre-condition is that all relevant data points have the same timestamp
                     var opcUaData = JsonConvert.DeserializeObject<IList<OpcUaDataPoint>>(messageBody);
 
-                    if (opcUaData.Any())
-                    {
-                        var first = opcUaData.First();
-                        var fileName = $"{first.ApplicationUri}/{first.SourceTimestamp:yyyy/MM/dd/HH/mm}.json";
-                        var metrics = CreateOutputMetrics(opcUaData.ToList(), first.SourceTimestamp);
+                    var appUriGroups = opcUaData.GroupBy(data => data.ApplicationUri);
 
-                        await UploadMetricsToBlobAsync(fileName, metrics, log);
+                    if (appUriGroups.Any())
+                    {
+                        foreach(var group in appUriGroups)
+                        {
+                            var first = group.First();
+                            var fileName = $"{first.ApplicationUri}/{first.SourceTimestamp:yyyy/MM/dd/HH/mm}.json";
+                            var metrics = CreateOutputMetrics(group.ToList(), first.SourceTimestamp);
+
+                            await UploadMetricsToBlobAsync(fileName, metrics, log);
+                        }
                     }
                 }
                 catch (Exception e)
